@@ -3,6 +3,7 @@ import * as controller from '../controllers/user';
 
 const router = express.Router();
 
-router.get('/', controller.test);
+router.get('/', controller.obtainAll);
+router.post('/login', controller.login);
 
 export default router;

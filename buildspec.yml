@@ -25,3 +25,7 @@ artifacts:
   files:
     - build/**/*
     - node_modules/**/*
+    - appspec.yml
+    - buildspec.yml
+    - start_server.sh
+    - install_dependencies.sh

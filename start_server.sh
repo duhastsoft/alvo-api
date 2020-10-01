@@ -9,4 +9,4 @@ fi
 yum remove -y httpd
 
 pm2 delete all
-pm2 start server.js
+pm2 start build/api/v1/server.js

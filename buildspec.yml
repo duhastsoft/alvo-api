@@ -23,7 +23,7 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
-    - build/api/v1/*
+    - build/**/*
     - appspec.yml
     - scripts/**/*
     - package.json

@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /tmp/
+cd /home/linux/
 
 curl --silent --location https://rpm.nodesource.com/setup_12.x | bash -
 yum install -y gcc-c++ make

@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /tmp/
+cd /home/linux/
 
 isExistApp = `pgrep httpd`
 if [[ -n  $isExistApp ]]; then
@@ -9,4 +9,4 @@ fi
 yum remove -y httpd
 
 pm2 delete all
-pm2 start build/api/v1/server.js
+pm2 start server.js

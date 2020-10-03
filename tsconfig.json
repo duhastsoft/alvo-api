@@ -9,7 +9,14 @@
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "noImplicitAny": false,
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
+
+    // Enabling decorators functionality
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "strictPropertyInitialization": false
   },
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

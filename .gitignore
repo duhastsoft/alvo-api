@@ -75,3 +75,6 @@ typings/
 
 # Serverless directories
 .serverless
+
+# TypeORM configuration file
+ormconfig.json

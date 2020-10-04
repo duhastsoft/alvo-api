@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes';
+import middlewares from './middlewares';
 
 const app = express();
 
@@ -19,5 +20,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/v1', routes);
 
+app.use(middlewares.notFound);
+app.use(middlewares.errorHandler);
 
 export default app;

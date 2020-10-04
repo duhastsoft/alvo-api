@@ -1,12 +1,22 @@
 import { NextFunction, Request, Response } from 'express';
+import { param, validationResult } from 'express-validator';
 import { getManager } from 'typeorm';
 import Question from '../entity/Question';
+import { validationErrors } from '../utils/validation';
+
+export enum QuestionValidations {
+  Remove,
+}
 
 async function obtainAll(req: Request, res: Response) {
   res.status(200).send('Question done');
 }
 
 async function remove(req: Request, res: Response, next: NextFunction) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) return validationErrors(errors, req, res);
+
   const questionRepository = getManager().getRepository(Question);
   try {
     const result = await questionRepository.delete(req.params.id);
@@ -24,4 +34,11 @@ async function update(req: Request, res: Response) {
   res.status(200).send('Question record updated');
 }
 
-export { obtainAll, remove, update };
+export function questionValidation(type: QuestionValidations) {
+  switch (type) {
+    case QuestionValidations.Remove:
+      return [param('id').isInt({ gt: 0 }).withMessage('Value must be positive')];
+  }
+}
+
+export default { obtainAll, remove, update };

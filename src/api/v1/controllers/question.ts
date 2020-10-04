@@ -37,7 +37,7 @@ async function update(req: Request, res: Response) {
 export function questionValidation(type: QuestionValidations) {
   switch (type) {
     case QuestionValidations.Remove:
-      return [param('id').isInt({ gt: 0 }).withMessage('Value must be positive')];
+      return [param('id').isInt({ gt: 0 }).withMessage('Value must be a positive integer')];
   }
 }
 

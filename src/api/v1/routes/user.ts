@@ -3,9 +3,9 @@ import * as controller from '../controllers/user';
 
 const router = express.Router();
 
-//GET ENDPOINTS
+// GET ENDPOINTS
 router.get('/', controller.obtainAll);
-//POST ENDPOINTS
+// POST ENDPOINTS
 router.post('/login', controller.login);
 router.post('/logout', controller.logout);
 

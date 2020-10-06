@@ -1,5 +1,5 @@
 import express from 'express';
-import users from './user'
+import users from './user';
 import questions from './question';
 
 const router = express.Router();

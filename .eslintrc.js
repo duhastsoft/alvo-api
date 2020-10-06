@@ -1,13 +1,27 @@
+/* eslint-disable no-undef */
 module.exports = {
-  env: {
-    jest: true,
-  },
-  extends: 'airbnb-base',
+  'parser': '@typescript-eslint/parser',
+  'plugins': [
+    '@typescript-eslint'
+  ],
+  'extends': [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended'
+  ],
   rules: {
     'comma-dangle': 0,
+    'camelcase': ['error', { ignoreDestructuring: true }],
     'no-underscore-dangle': 0,
     'no-param-reassign': 0,
     'no-return-assign': 0,
-    camelcase: 0,
+    'linebreak-style': ['error', 'unix'],
+    'quotes': ['error', 'single']
   },
+  'settings': {
+    'babel-plugin-root-import': {
+      'rootPathPrefix': '~/',
+      'rootPathSuffix': 'src/'
+    }    
+  }
 };

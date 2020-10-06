@@ -3,11 +3,11 @@ import controller, { questionValidation, QuestionValidations } from '../controll
 
 const router = express.Router();
 
-//GET ENDPOINTS
+// GET ENDPOINTS
 router.get('/', controller.obtainAll);
-//PUT ENDPOINTS
+// PUT ENDPOINTS
 router.put('/:id', controller.update);
-//DELET ENDPOINTS
+// DELET ENDPOINTS
 router.delete('/:id', questionValidation(QuestionValidations.Remove), controller.remove);
 
 export default router;

@@ -8,7 +8,7 @@ export enum QuestionValidations {
   Remove,
 }
 
-async function obtainAll(req: Request, res: Response) {
+async function obtainAll(_req: Request, res: Response){
   res.status(200).send('Question done');
 }
 
@@ -30,7 +30,7 @@ async function remove(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function update(req: Request, res: Response) {
+async function update(_req: Request, res: Response) {
   res.status(200).send('Question record updated');
 }
 

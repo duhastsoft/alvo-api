@@ -1,8 +1,10 @@
 import env from 'dotenv';
-env.config();
 import http from 'http';
 import { createConnection } from 'typeorm';
 import app from './app';
+
+env.config();
+
 
 const port = process.env.PORT || 4000;
 

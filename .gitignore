@@ -38,6 +38,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+build/
 
 # TypeScript v1 declaration files
 typings/
@@ -74,3 +75,7 @@ typings/
 
 # Serverless directories
 .serverless
+
+# TypeORM configuration file
+ormconfig.json
+ormconfig.js

@@ -23,5 +23,8 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
-    - build/**/*
-    - node_modules/**/*
+    - "**/*"
+    - ../../../appspec.yml
+    - ../../../scripts/**/*
+    - ../../../package.json
+  base-directory: build/api/v1

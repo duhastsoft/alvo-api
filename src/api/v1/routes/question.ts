@@ -1,5 +1,5 @@
 import express from 'express';
-import * as controller from '../controllers/question';
+import controller, { questionValidation, QuestionValidations } from '../controllers/question';
 
 const router = express.Router();
 
@@ -8,6 +8,6 @@ router.get('/', controller.obtainAll);
 //PUT ENDPOINTS
 router.put('/:id', controller.update);
 //DELET ENDPOINTS
-router.delete('/:id', controller.remove);
+router.delete('/:id', questionValidation(QuestionValidations.Remove), controller.remove);
 
 export default router;

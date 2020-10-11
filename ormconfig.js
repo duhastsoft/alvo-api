@@ -3,12 +3,12 @@
 - Change the paths for entities, migrations, suscribers and migrationDir based on the folder
 structure. */
 module.exports = {
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'test',
-  password: 'test',
-  database: 'test',
+  type: process.env.DB_TYPE || 'postgres',
+  host: process.env.DB_HOST || 'localhost',
+  port: process.env.DB_PORT || 5432,
+  username: process.env.DB_USER || 'test',
+  password: process.env.DB_PASS || 'root',
+  database: process.env.DB_NAME || 'test',
   logging: true,
   entities: ['src/entity/**/*.ts'],
   migrations: ['src/migration/**/*.ts'],

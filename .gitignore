@@ -78,4 +78,3 @@ typings/
 
 # TypeORM configuration file
 ormconfig.json
-ormconfig.js

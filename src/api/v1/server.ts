@@ -11,9 +11,7 @@ createConnection()
     server.listen(port, () => console.log(`Listening on ${port}`));
   })
   .catch((error) => {
-    console.error('TypeORM connection error:', error)
-  }
-  );
+    console.error('TypeORM connection error:', error);
+  });
 
-  
 const server = http.createServer(app);

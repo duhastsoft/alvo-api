@@ -10,13 +10,12 @@
     "skipLibCheck": true /* Skip type checking of declaration files. */,
     "noImplicitAny": false,
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
-
+    "baseUrl": ".",
     // Enabling decorators functionality
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-
     "strictPropertyInitialization": false
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": ["node_modules", "build"],
 }

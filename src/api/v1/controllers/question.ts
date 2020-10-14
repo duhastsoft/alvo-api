@@ -17,7 +17,7 @@ async function remove(req: Request, res: Response, next: NextFunction) {
 
   if (!errors.isEmpty()) return validationErrors(errors, req, res);
 
-  const questionRepository = getManager().getRepository(Question);
+  const questionRepository = getManager().getRepository<Question>(Question);
   try {
     const result = await questionRepository.delete(req.params.id);
     if (result.affected) {

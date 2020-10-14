@@ -15,7 +15,7 @@ const createDto = {
   categoryId: Joi.number().integer().min(1),
 };
 
-const paramIdSchema = Joi.object(idParam);
-const createSchema = Joi.object(createDto);
+const paramId = Joi.object(idParam);
+const create = Joi.object(createDto);
 
-export { paramIdSchema, createSchema };
+export { paramId, create };

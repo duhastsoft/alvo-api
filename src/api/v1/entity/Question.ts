@@ -28,7 +28,7 @@ class Question extends BaseEntity {
   @Column()
   rightAnswer: number;
 
-  @ManyToOne((type) => Category, (category) => category.questions)
+  @ManyToOne(() => Category, (category) => category.questions)
   category: Category;
 }
 

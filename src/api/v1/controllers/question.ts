@@ -3,8 +3,15 @@ import { getRepository } from 'typeorm';
 import Category from '../entity/Category';
 import Question from '../entity/Question';
 
-async function obtainAll(_req: Request, res: Response): Promise<void> {
-  res.status(200).send('Question done');
+async function obtainAll(_req: Request, res: Response, next: NextFunction): Promise<void> {
+  const questionRepository = getRepository(Question);
+
+  try {
+    const result = await questionRepository.find();
+    res.status(200).json({ length: result.length, data: result });
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -52,4 +59,33 @@ async function update(req: Request, res: Response, next: NextFunction): Promise<
   }
 }
 
-export default { obtainAll, remove, update };
+async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const questionRepository = getRepository(Question);
+  const { body } = req;
+  try {
+    const question = new Question();
+
+    question.text = body.text;
+    question.answer1 = body.answer1;
+    question.answer2 = body.answer2;
+    question.answer3 = body.answer3;
+    question.answer4 = body.answer4;
+    question.rightAnswer = body.rightAnswer;
+    question.image = body.image;
+
+    if (body.categoryId) {
+      const categoryRepository = getRepository(Category);
+      const category = await categoryRepository.findOneOrFail(body.categoryId);
+      question.category = category;
+    }
+
+    await questionRepository.save(question);
+
+    res.status(200).json({ data: question });
+  } catch (err) {
+    if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+    next(err);
+  }
+}
+
+export default { obtainAll, remove, update, create };

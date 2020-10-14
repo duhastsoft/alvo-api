@@ -3,8 +3,15 @@ import { getRepository } from 'typeorm';
 import Category from '../entity/Category';
 import Question from '../entity/Question';
 
-async function obtainAll(_req: Request, res: Response): Promise<void> {
-  res.status(200).send('Question done');
+async function obtainAll(_req: Request, res: Response, next: NextFunction): Promise<void> {
+  const questionRepository = getRepository(Question);
+
+  try {
+    const result = await questionRepository.find();
+    res.status(200).json({ length: result.length, data: result });
+  } catch (err) {
+    next(err);
+  }
 }
 
 async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {

@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Category } from './Category';
+import Category from './Category';
 import BaseEntity from './common/BaseEntity';
 
 @Entity()
@@ -28,7 +28,7 @@ class Question extends BaseEntity {
   @Column()
   rightAnswer: number;
 
-  @ManyToOne((type) => Category, (category) => category.questions)
+  @ManyToOne(() => Category, (category) => category.questions)
   category: Category;
 }
 

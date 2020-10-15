@@ -3,7 +3,7 @@ import BaseEntity from './common/BaseEntity';
 import Question from './Question';
 
 @Entity()
-export class Category extends BaseEntity {
+class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,6 +16,8 @@ export class Category extends BaseEntity {
   @Column({ nullable: true })
   description?: string;
 
-  @OneToMany((type) => Question, (question) => question.category)
+  @OneToMany(() => Question, (question) => question.category)
   questions: Question[];
 }
+
+export default Category;

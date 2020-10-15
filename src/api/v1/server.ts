@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes';
 import { createConnection } from 'typeorm';
-import dbCondig from '../../database';
+import dbConfig from './database';
 import middlewares from './middlewares';
 
 

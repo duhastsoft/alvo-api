@@ -4,12 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config /src/database.ts",
-    "migration:generate": "npm run typeorm -- migration:generate --name GeneratedDatabase",
-    "migration:run": "npm run typeorm -- migration:run",
-    "migration:create": "ts-node ./node_modules/typeorm/cli.js migration:create -n CreatedDatabase",
-    "migrate:up": "ts-node ./node_modules/typeorm/cli.js migration:run",
-    "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js --config /src/api/v1/database.ts",
     "start:dev": "nodemon",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --fix",

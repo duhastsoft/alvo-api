@@ -15,7 +15,7 @@ async function login(req: Request, res: Response): Promise<void> {
   const doc = await userRepository.findOne({
     where: [
       {account:req.body.account},
-      {email:req.body.email}
+      {email:req.body.account}
     ], relations: ['role']
   });
   if(doc){

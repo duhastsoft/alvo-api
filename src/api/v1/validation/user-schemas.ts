@@ -1,19 +1,18 @@
 import Joi from 'joi';
 
-const creteToken = {
-    account: Joi.string().trim().min(8).alphanum().required(),
-    password: Joi.string().trim().min(8).alphanum().required(),
-    email: Joi.string().trim().min(8).email().required(),
+const createTk = {
+    account: Joi.alternatives().try(Joi.string().trim().min(8).alphanum().required(), Joi.string().trim().min(8).email().required()),
+    password: Joi.string().trim().min(8).alphanum().required()
 };
 
 const createDto = {
-    account: Joi.string().trim().min(8).alphanum().required(),
+    account: Joi.alternatives().try(Joi.string().trim().min(8).alphanum().required(), ) ,
     password: Joi.string().trim().min(8).alphanum().required(),
     email: Joi.string().trim().min(8).email().required(),
-    role: Joi.string().trim().alphanum().required(),
+    role: Joi.string().trim().alphanum().required()
 };
 
-const createToken = Joi.object(creteToken);
+const createToken = Joi.object(createTk);
 const createUser = Joi.object(createDto);
 
 

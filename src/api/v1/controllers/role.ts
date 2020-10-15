@@ -1,17 +1,10 @@
 import { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
 import { getManager } from 'typeorm';
 import Role from '../entity/Role';
 import Permission from '../entity/Permission';
-import { validationErrors } from '../utils/validation';
 
-export enum RoleValidations {
-    Create
-}
 
-async function create(req: Request, res: Response) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) return validationErrors(errors, req, res);
+async function create(req: Request, res: Response): Promise<void> {
 
     const roleRepository = getManager().getRepository<Role>(Role);
     const permissionRepository = getManager().getRepository<Permission>(Permission);
@@ -31,34 +24,17 @@ async function create(req: Request, res: Response) {
     newRole.description = req.body.description;
     newRole.permisions = newPermisions;
     
-    await roleRepository.save(newRole).catch(e=>{
-        return res.status(500).json({
-            message: 'Error creating role'
+    try {
+        await roleRepository.save(newRole);
+        await permissionRepository.save(newPermisions);
+        res.status(201).json({
+            message: 'Role record created'
+          });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error creating Role'
         });
-    })
-    await permissionRepository.save(newPermisions).catch(e=>{
-        return res.status(500).json({
-            message: 'Error creating permission'
-        });
-    });
-
-    return res.status(201).json({
-        message: 'Role record created'
-      });
-}
-
-export function roleValidation(type: RoleValidations) {
-    switch (type) {
-      case RoleValidations.Create:
-        return [
-            body('name').isAlphanumeric().withMessage('Value must be an alphanumeric'),
-            body('description').isString().withMessage('Value must be a string'),
-            body('permissions').not().isEmpty().withMessage('A role cant lack permissions'),
-            body('permissions.*.name').isAlphanumeric().withMessage('Value must be an alphanumeric'),
-            body('permissions.*.actions').not().isEmpty().withMessage('An entity cant lack actions'),
-            body('permissions.*.actions.*').isAlphanumeric().withMessage('Values must be an email')
-          ];
     }
-  }
+}
 
 export default {create};

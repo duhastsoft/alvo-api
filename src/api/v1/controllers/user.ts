@@ -98,7 +98,7 @@ async function register(req: Request, res: Response): Promise<void> {
 }
 
 async function logout(req: Request, res: Response): Promise<void> {
-  res.status(200).send('Logout here');
+  res.status(200).send('Token invalidated');
 }
 
 

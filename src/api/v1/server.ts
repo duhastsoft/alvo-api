@@ -1,4 +1,3 @@
-
 import http from 'http';
 import env from './utils/envoriment';
 
@@ -11,9 +10,9 @@ import { createConnection } from 'typeorm';
 import dbConfig from './database';
 import middlewares from './middlewares';
 
-
-createConnection(dbCondig)
-  .then(() => {
+createConnection(dbConfig)
+  .then(async (connection) => {
+    await connection.runMigrations();
     const app = express();
     app.use(morgan('dev'));
     app.use(helmet());
@@ -32,7 +31,6 @@ createConnection(dbCondig)
     app.use(middlewares.errorHandler);
     const server = http.createServer(app);
     server.listen(env.port, () => console.log(`Listening on ${env.port}`));
-
   })
   .catch((error) => {
     console.error('TypeORM connection error:', error);

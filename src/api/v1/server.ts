@@ -1,6 +1,6 @@
 
 import http from 'http';
-import env from './utils/envoriment'
+import env from './utils/envoriment';
 
 import express from 'express';
 import morgan from 'morgan';
@@ -33,9 +33,7 @@ createConnection(dbCondig)
     const server = http.createServer(app);
     server.listen(env.port, () => console.log(`Listening on ${env.port}`));
 
-    })
+  })
   .catch((error) => {
-    console.error('TypeORM connection error:', error)
-  }
-);
-
+    console.error('TypeORM connection error:', error);
+  });

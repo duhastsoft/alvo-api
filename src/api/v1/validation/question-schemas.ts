@@ -10,7 +10,7 @@ const createDto = {
   answer2: Joi.string().trim().required(),
   answer3: Joi.string().trim().required(),
   answer4: Joi.string().trim().required(),
-  image: Joi.string().uri(),
+  image: Joi.string().allow('').uri(),
   rightAnswer: Joi.number().integer().min(1).max(4).required(),
   categoryId: Joi.number().integer().min(1),
 };

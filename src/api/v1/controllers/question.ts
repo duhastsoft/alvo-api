@@ -14,6 +14,21 @@ async function obtainAll(_req: Request, res: Response, next: NextFunction): Prom
   }
 }
 
+async function findById(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const questionRepository = getRepository(Question);
+
+  try {
+    const question = await questionRepository.findOneOrFail(req.params.id, {
+      relations: ['category'],
+    });
+
+    res.status(200).json({ data: question });
+  } catch (err) {
+    if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+    next(err);
+  }
+}
+
 async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {
   const questionRepository = getRepository(Question);
   try {
@@ -87,4 +102,4 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
   }
 }
 
-export default { obtainAll, remove, update, create };
+export default { findById, obtainAll, remove, update, create };

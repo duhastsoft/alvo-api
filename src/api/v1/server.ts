@@ -10,13 +10,20 @@ import { createConnection } from 'typeorm';
 import dbConfig from './database';
 import middlewares from './middlewares';
 
+const corsOptions = {
+  origin: '*',
+  methods: '*',
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true
+}
+
 createConnection(dbConfig)
   .then(async (connection) => {
     await connection.runMigrations();
     const app = express();
     app.use(morgan('dev'));
     app.use(helmet());
-    app.use(cors());
+    app.use(cors(corsOptions));
     app.use(express.json());
 
     app.get('/', (req, res) => {

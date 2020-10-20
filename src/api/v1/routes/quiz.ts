@@ -7,5 +7,6 @@ const router = Router();
 
 router.get('/', validateQuery(testQuerySchema), controller.getCategoryQuiz);
 router.get('/vmt', controller.getVmtQuiz);
+router.get('/free', controller.getFreeQuiz);
 
 export default router;

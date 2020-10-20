@@ -31,6 +31,18 @@ async function getVmtQuiz(req: Request, res: Response, next: NextFunction): Prom
   }
 }
 
+async function getFreeQuiz(req: Request, res: Response, next: NextFunction): Promise<void> {
+  try {
+    const limit = parseInt(req.query.limit?.toString() || '20');
+
+    const quiz = await getQuestionsByCategory(null, limit);
+
+    res.status(200).json({ data: quiz });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function getQuestionsByCategory(category: number | null, limit: number) {
   const repository = getRepository(Question);
   try {
@@ -48,4 +60,4 @@ async function getQuestionsByCategory(category: number | null, limit: number) {
   }
 }
 
-export { getCategoryQuiz, getVmtQuiz };
+export { getCategoryQuiz, getVmtQuiz, getFreeQuiz };

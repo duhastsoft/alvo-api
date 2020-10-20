@@ -6,5 +6,6 @@ import { validateQuery } from '../validation/validation';
 const router = Router();
 
 router.get('/', validateQuery(testQuerySchema), controller.getCategoryQuiz);
+router.get('/vmt', controller.getVmtQuiz);
 
 export default router;

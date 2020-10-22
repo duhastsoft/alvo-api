@@ -1,15 +1,15 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response} from 'express';
 import { getManager } from 'typeorm';
 import User from '../entity/User';
 import Role from '../entity/Role';
 import jwt from '../tools/token';
 import bcrypt from '../tools/genHash';
 
-async function obtainAll(req: Request, res: Response): Promise<void>  {
+async function obtainAll(req: Request, res: Response, next: NextFunction): Promise<void>  {
     res.status(200).send('User done');
   }
 
-async function login(req: Request, res: Response): Promise<void> {
+async function login(req: Request, res: Response, next: NextFunction): Promise<void> {
 
   const userRepository = getManager().getRepository<User>(User);
   const doc = await userRepository.findOne({
@@ -32,9 +32,7 @@ async function login(req: Request, res: Response): Promise<void> {
           token: response.token
         });
       } catch (error) {
-        res.status(500).json({
-          message: 'JWT error',
-        });
+        next(error);
       }
     }
   }
@@ -45,7 +43,7 @@ async function login(req: Request, res: Response): Promise<void> {
   }
 }
 
-async function register(req: Request, res: Response): Promise<void> {
+async function register(req: Request, res: Response, next: NextFunction): Promise<void> {
 
   const userRepository = getManager().getRepository<User>(User);
   const roleRepository = getManager().getRepository<Role>(Role);
@@ -71,14 +69,12 @@ async function register(req: Request, res: Response): Promise<void> {
           message: 'User record created'
         });
       } catch (error) {
-        res.status(500).json({
-          message: 'Error creating new user'
-        });
+        next(error);
       }
     }
     else{
       res.status(500).json({
-        message: 'Hash error'
+        message: 'Hash error please try again'
       });
     }
   }

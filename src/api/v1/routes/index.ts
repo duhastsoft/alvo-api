@@ -5,6 +5,7 @@ import quiz from './quiz';
 import roles from './role';
 import users from './user';
 import serviceCategories from './service-category'
+import service from './service'
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use('/question', questions);
 router.use('/quiz', quiz);
 router.use('/role', roles);
 router.use('/service-category', serviceCategories);
+router.use('/service', service)
 
 export default router;

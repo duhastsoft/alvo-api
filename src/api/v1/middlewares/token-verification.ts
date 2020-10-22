@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import env from '../utils/envoriment';
 
-const tokenVerify = (req: Request, res: Response, next: NextFunction) => {
+const tokenVerify = (req: Request, res: Response, next: NextFunction): void => {
   try {
     let token = {};
     //Splits token from the Bearer
@@ -16,9 +16,9 @@ const tokenVerify = (req: Request, res: Response, next: NextFunction) => {
     //The resulting data from the decoding is set in req
 
     req.userData = decoded;
-    return next();
+    next();
   } catch (error) {
-    return res.status(401).json({ message: 'Not verified user, please login and add the token' });
+    res.status(401).json({ message: 'Not verified user, please login and add the token' });
   }
 };
 

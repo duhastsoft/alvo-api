@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { getManager } from 'typeorm';
 import Role from '../entity/Role';
 import Permission from '../entity/Permission';
 
 
-async function create(req: Request, res: Response): Promise<void> {
+async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
 
     const roleRepository = getManager().getRepository<Role>(Role);
     const permissionRepository = getManager().getRepository<Permission>(Permission);
@@ -28,12 +28,11 @@ async function create(req: Request, res: Response): Promise<void> {
         await roleRepository.save(newRole);
         await permissionRepository.save(newPermisions);
         res.status(201).json({
-            message: 'Role record created'
+            message: 'Role record created',
+            data: newRole
           });
     } catch (error) {
-        res.status(500).json({
-            message: 'Error creating Role'
-        });
+        next(error);
     }
 }
 

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany, getManager} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
 import BaseEntity from './common/BaseEntity';
 import User from './User';
 import Permission from './Permission'

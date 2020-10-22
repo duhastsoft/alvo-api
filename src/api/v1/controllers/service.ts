@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
-import { getManager } from 'typeorm';
+import { getRepository } from 'typeorm';
 import Service from '../entity/Service';
 import ServiceCategory from '../entity/ServiceCategory';
 
 
 async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
 
-    const serviceRepository = getManager().getRepository<Service>(Service);
-    const serviceCRepository = getManager().getRepository<ServiceCategory>(ServiceCategory);
+    const serviceRepository = getRepository(Service);
+    const serviceCRepository = getRepository(ServiceCategory);
 
     const newService = new Service();
     newService.address  = req.body.address; 
@@ -23,27 +23,35 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
     newService.serviceHours = req.body.serviceHours;
 
     try {
-        const category = await serviceCRepository.findOne({id:req.body.categoryId});
-        if(category){
-            newService.category = category;
-            serviceRepository.save(newService).then(result=>{
-                res.status(201).json({
-                    message: 'Service record created'.length,
-                    data: newService
-                });
-            }).catch(err=>{
-                next(err);
-            });
-        }
-        else{
-            res.status(500).json({
-                message: 'Service category not found'
-            });
-        }
-        
-    } catch (error) {
-        next(error);
+        const category = await serviceCRepository.findOneOrFail({id:req.body.categoryId});
+        newService.category = category;
+        await serviceRepository.save(newService);
+    } catch (err) {
+        if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+        next(err);
     }
 }
 
-export default {create};
+async function obtainAll(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const serviceRepository = getRepository(Service);
+    try {
+      const result = await serviceRepository.find();
+      res.status(200).json({ length: result.length, data: result});
+    } catch (err) {
+      next(err);
+    }
+}
+
+async function findByName(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const serviceRepository = getRepository(Service);
+    try {
+        const result = await serviceRepository.createQueryBuilder().select().where('name ILIKE :name', {name: `%${req.query.name}%`}).getMany()
+        res.status(200).json({ data: result });
+    } catch (err) {
+      if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+      next(err);
+    }
+}
+
+
+export default {create, findByName, obtainAll};

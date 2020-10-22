@@ -9,7 +9,7 @@ const createDto = {
     account: Joi.alternatives().try(Joi.string().trim().min(8).alphanum().required(), ) ,
     password: Joi.string().trim().min(8).alphanum().required(),
     email: Joi.string().trim().min(8).email().required(),
-    role: Joi.string().trim().alphanum().required()
+    role: Joi.number().integer().min(1)
 };
 
 const createToken = Joi.object(createTk);

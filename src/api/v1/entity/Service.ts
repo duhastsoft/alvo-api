@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, Long} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, Long, Index} from 'typeorm';
 import BaseEntity from './common/BaseEntity';
 import ServiceCategory from './ServiceCategory';
 
@@ -7,6 +7,7 @@ export class Service extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Index({ fulltext: true})
     @Column()
     name: string
 

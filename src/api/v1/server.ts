@@ -24,6 +24,7 @@ createConnection(dbConfig)
     app.use(morgan('dev'));
     app.use(helmet());
     app.use(cors(corsOptions));
+    
     app.use(express.json());
 
     app.get('/', (req, res) => {

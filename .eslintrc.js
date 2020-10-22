@@ -13,7 +13,6 @@ module.exports = {
     'no-underscore-dangle': 0,
     'no-param-reassign': 0,
     'no-return-assign': 0,
-    'linebreak-style': ['error', 'unix'],
     quotes: ['error', 'single'],
   },
   settings: {

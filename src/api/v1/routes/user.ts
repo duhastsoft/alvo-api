@@ -1,6 +1,6 @@
 import express from 'express';
 import controller from '../controllers/user';
-import tokenVerify from '../middlewares/tokenVerification';
+import tokenVerify from '../middlewares/token-verification';
 import * as schemas from '../validation/user-schemas';
 import { validateBody } from '../validation/validation';
 

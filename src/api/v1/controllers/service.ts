@@ -53,5 +53,52 @@ async function findByName(req: Request, res: Response, next: NextFunction): Prom
     }
 }
 
+async function update(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const serviceRepository = getRepository(Service);
+  const { body, params } = req;
+  try {
+    const service = await serviceRepository.findOneOrFail(params.id);
 
-export default {create, findByName, obtainAll};
+    if (body.categoryId) {
+      const categoryRepository = getRepository(ServiceCategory);
+      const category = await categoryRepository.findOneOrFail(body.categoryId);
+      service.category = category || service.category;
+    }
+
+    service.address  = body.address ?? service.address; 
+    service.category = body.category ?? service.category;
+    service.contactName = body.contactName ?? service.contactName;
+    service.contactNumber = body.contactNumber ?? service.contactNumber;
+    service.description = body.description ?? service.description;
+    service.image = body.image ?? service.image;
+    service.latitud = body.latitud ?? service.latitud;
+    service.longitude = body.longitude ?? service.longitude;
+    service.name = body.name ?? service.name;
+    service.priceRange = body.priceRange ?? service.priceRange;
+    service.serviceHours = body.serviceHours ?? service.serviceHours;
+
+    await serviceRepository.save(service);
+
+    res.status(200).json({ data: service });
+  } catch (err) {
+    if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+    next(err);
+  }
+}
+
+async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const serviceRepository = getRepository(Service);
+  try {
+    const result = await serviceRepository.delete(req.params.id);
+    if (result.affected) {
+      res.status(200).json({ message: 'Service deleted' });
+    } else {
+      res.status(404).json({ message: `Service with id ${req.params.id} not found.` });
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
+
+export default {create, findByName, obtainAll, remove, update};

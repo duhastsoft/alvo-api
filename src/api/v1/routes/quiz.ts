@@ -5,8 +5,8 @@ import { validateQuery } from '../validation/validation';
 
 const router = Router();
 
-router.get('/', validateQuery(testQuerySchema), controller.getCategoryQuiz);
+router.get('/category', validateQuery(testQuerySchema), controller.getCategoryQuiz);
 router.get('/vmt', controller.getVmtQuiz);
-router.get('/free', controller.getFreeQuiz);
+router.get('/free', validateQuery(testQuerySchema), controller.getFreeQuiz);
 
 export default router;

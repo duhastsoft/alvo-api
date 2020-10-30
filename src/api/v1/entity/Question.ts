@@ -11,6 +11,9 @@ class Question extends BaseEntity {
   text: string;
 
   @Column({ nullable: true })
+  localImage?: string;
+
+  @Column({ nullable: true })
   image?: string;
 
   @Column()
@@ -27,6 +30,9 @@ class Question extends BaseEntity {
 
   @Column()
   rightAnswer: number;
+
+  @Column({ default: false })
+  requiresOrder: boolean;
 
   @ManyToOne(() => Category, (category) => category.questions)
   category: Category;

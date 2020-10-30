@@ -26,6 +26,10 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
         const category = await serviceCRepository.findOneOrFail({id:req.body.categoryId});
         newService.category = category;
         await serviceRepository.save(newService);
+        res.status(201).json({
+          message: 'Service record created',
+          data: newService
+      }); 
     } catch (err) {
         if (err.constructor.name === 'EntityNotFoundError') res.status(404);
         next(err);

@@ -53,6 +53,18 @@ async function findByName(req: Request, res: Response, next: NextFunction): Prom
     }
 }
 
+async function findById(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const serviceCRepository = getRepository(Service);
+  try {
+      const service = await serviceCRepository.findOneOrFail(req.params.id);
+      res.status(200).json({ data: service });
+    } catch (err) {
+      if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+      next(err);
+    }
+}
+
+
 async function update(req: Request, res: Response, next: NextFunction): Promise<void> {
   const serviceRepository = getRepository(Service);
   const { body, params } = req;
@@ -101,4 +113,4 @@ async function remove(req: Request, res: Response, next: NextFunction): Promise<
 }
 
 
-export default {create, findByName, obtainAll, remove, update};
+export default {create, findByName,findById, obtainAll, remove, update};

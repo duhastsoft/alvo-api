@@ -8,6 +8,7 @@ const router = express.Router();
 // GET ENDPOINTS
 router.get('/all', controller.obtainAll);
 router.get('/search', validateQuery(schemas.queryName),  controller.findByName);
+router.get('/:id',  validateParams(schemas.paramId),  controller.findById);
 
 // POST ENDPOINTS
 router.post('/', validateBody(schemas.create), controller.create);

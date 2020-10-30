@@ -56,4 +56,35 @@ async function findById(req: Request, res: Response, next: NextFunction): Promis
       }
 }
 
-export default {create, obtainAllServices, obtainAllCategories, findById};
+async function update(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const serviceCRepository = getRepository(ServiceCategory);
+  const { body, params } = req;
+  try {
+    const serviceC = await serviceCRepository.findOneOrFail(params.id);
+    serviceC.name = body.name ?? serviceC.name;
+    serviceC.description = body.description ?? serviceC.description;
+
+    await serviceCRepository.save(serviceC);
+
+    res.status(200).json({ data: serviceC });
+  } catch (err) {
+    if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+    next(err);
+  }
+}
+
+async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const serviceCRepository = getRepository(ServiceCategory);
+  try {
+    const result = await serviceCRepository.delete(req.params.id);
+    if (result.affected) {
+      res.status(200).json({ message: 'Category deleted' });
+    } else {
+      res.status(404).json({ message: `Category with id ${req.params.id} not found.` });
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
+export default {create, obtainAllServices, obtainAllCategories, findById, update, remove};

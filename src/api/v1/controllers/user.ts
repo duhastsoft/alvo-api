@@ -54,7 +54,7 @@ async function register(req: Request, res: Response, next: NextFunction): Promis
         {email:req.body.email} 
       ]
     });
-    const role = await roleRepository.findOneOrFail({name:req.body.role});
+    const role = await roleRepository.findOneOrFail({id:req.body.roleId});
     if(!doc && role){
       const newUser = new User();
       newUser.account = req.body.account;
@@ -98,5 +98,45 @@ async function logout(req: Request, res: Response): Promise<void> {
   res.status(200).send('Token invalidated');
 }
 
+async function update(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const userRepository = getRepository(User);
+  const { body, params } = req;
+  try {
+    const user = await userRepository.findOneOrFail(params.id);
 
-export default {obtainAll, login, logout, register};
+    if (body.categoryId) {
+      const roleRepository = getRepository(Role);
+      const role = await roleRepository.findOneOrFail(body.roleId);
+      user.role = role || user.role;
+    }
+
+    user.account = body.account ?? user.account;
+    user.email = body.email ?? user.email;
+    user.givenName = body.givenName ?? user.givenName;
+    user.lastName = body.lastName ?? user.lastName;
+    user.status = body.status ?? user.status;
+
+    await userRepository.save(user);
+
+    res.status(200).json({ data: user });
+  } catch (err) {
+    if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+    next(err);
+  }
+}
+
+async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const serviceRepository = getRepository(User);
+  try {
+    const result = await serviceRepository.delete(req.params.id);
+    if (result.affected) {
+      res.status(200).json({ message: 'User deleted' });
+    } else {
+      res.status(404).json({ message: `User with id ${req.params.id} not found.` });
+    }
+  } catch (err) {
+    next(err);
+  }
+}
+
+export default {obtainAll, login, logout, register, update, remove};

@@ -12,7 +12,7 @@ services:
             - ${PORT}:8080
         depends_on:
             - database
-        command: npm run start
+        command: bash -c "scripts/wait_for_it.sh --timeout=0 ${DB_HOST}:${DB_PORT} && npm run start"
     database:
         env_file: .env
         image: postgres
@@ -23,4 +23,3 @@ services:
             - "POSTGRES_DB=${DB_NAME}"
         ports: 
             - ${DB_PORT}:5432
-            

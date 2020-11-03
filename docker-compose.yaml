@@ -15,7 +15,7 @@ services:
         command: bash -c "scripts/wait_for_it.sh --timeout=0 ${DB_HOST}:${DB_PORT} && npm run start"
     database:
         env_file: .env
-        image: postgres
+        image: postgres:alpine
         container_name: 'postgres-container'
         environment: 
             - "POSTGRES_PASSWORD=${DB_PASS}"

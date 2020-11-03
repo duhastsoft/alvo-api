@@ -9,12 +9,12 @@ const connectionOptions: ConnectionOptions = {
   password: env.db.password,
   database: env.db.database,
   logging: true,
-  entities: [env.profile.prefix+'src/api/v1/entity/**/*'+env.profile.suffix],
-  migrations: [env.profile.prefix+'src/api/v1/migration/**/*'+env.profile.suffix],
-  subscribers: [env.profile.prefix+'src/api/v1/subscriber/**/*'+env.profile.suffix],
+  entities: [env.profile.prefix+'api/v1/entity/**/*'+env.profile.suffix],
+  migrations: [env.profile.prefix+'api/v1/migration/**/*'+env.profile.suffix],
+  subscribers: [env.profile.prefix+'api/v1/subscriber/**/*'+env.profile.suffix],
   cli: {
-    entitiesDir: env.profile.prefix+'src/api/v1/entity',
-    migrationsDir: env.profile.prefix+'src/api/v1/migration',
+    entitiesDir: env.profile.prefix+'api/v1/entity',
+    migrationsDir: env.profile.prefix+'api/v1/migration',
   },
 };
 

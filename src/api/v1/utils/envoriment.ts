@@ -15,7 +15,7 @@ export = {
         jwt: process.env.JSON_WEB_TOKEN_SECRET || 'secret'
     },
     profile: {
-        suffix: (process.env.NODE_ENV!='development')?  'build/' : '',
-        prefix: (process.env.NODE_ENV!='development')?  '.js' : '.ts'
+        prefix: (process.env.NODE_ENV!='development')?  './build/' : 'src/',
+        suffix: (process.env.NODE_ENV!='development')?  '.js' : '.ts'
     }
 }

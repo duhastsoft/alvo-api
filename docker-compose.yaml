@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+    api:
+        env_file: .env
+        environment: 
+            - NODE_ENV=deploy
+            - DB_HOST=database
+        container_name: 'alvo-container'
+        image: alvo:1.0
+        ports: 
+            - ${PORT}:8080
+        depends_on:
+            - database
+        command: bash -c "scripts/wait_for_it.sh --timeout=0 ${DB_HOST}:${DB_PORT} && npm run start"
+    database:
+        env_file: .env
+        image: postgres:alpine
+        container_name: 'postgres-container'
+        environment: 
+            - "POSTGRES_PASSWORD=${DB_PASS}"
+            - "POSTGRES_USER=${DB_USER}"
+            - "POSTGRES_DB=${DB_NAME}"
+        ports: 
+            - ${DB_PORT}:5432

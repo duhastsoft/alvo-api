@@ -13,5 +13,9 @@ export = {
     encryption: {
         salt: parseInt(<string>process.env.SALT_ROUNDS, 10) || 3,
         jwt: process.env.JSON_WEB_TOKEN_SECRET || 'secret'
+    },
+    profile: {
+        prefix: (process.env.NODE_ENV!='development')?  './build/' : 'src/',
+        suffix: (process.env.NODE_ENV!='development')?  '.js' : '.ts'
     }
 }

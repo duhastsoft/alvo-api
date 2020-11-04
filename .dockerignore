@@ -1,0 +1,11 @@
+node_modules
+build
+.editorconfig
+.eslintignore
+.eslintrc.js
+.gitignore
+.prettierrc
+appspec.yml
+buildspec.yml
+nodemon.json
+.env

@@ -2,24 +2,21 @@ import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import env from '../utils/environment';
 
-const tokenVerify = (req: Request, res: Response, next: NextFunction): void => {
+const authenticate = (req: Request, res: Response, next: NextFunction): void => {
   try {
-    let token = {};
-    //Splits token from the Bearer
+    let token = '';
     if (req.headers.authorization) {
-      token = req.headers.authorization.split('Bearer ')[1];
-    } else if (req.query.token) {
-      token = req.query.token;
+      token = req.headers.authorization.split(' ')[1];
     }
     //Attempts to decode the token
-    const decoded = jwt.verify(token, env.encryption.jwt, null);
+    const decoded = jwt.verify(token, env.encryption.jwt);
     //The resulting data from the decoding is set in req
 
-    req.userData = decoded;
+    req.userData = decoded as { id: string; role: string };
     next();
   } catch (error) {
     res.status(401).json({ message: 'Not verified user, please login and add the token' });
   }
 };
 
-export default tokenVerify;
+export default authenticate;

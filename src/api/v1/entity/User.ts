@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import bcrypt from 'bcrypt';
 import BaseEntity from './common/BaseEntity';
 
 export enum UserRole {
@@ -8,13 +9,13 @@ export enum UserRole {
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   account: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -31,6 +32,10 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar' })
   role: UserRole;
+
+  checkIfPasswordMatches(unencryptedPassword: string): Promise<boolean> {
+    return bcrypt.compare(unencryptedPassword, this.password);
+  }
 }
 
 export default User;

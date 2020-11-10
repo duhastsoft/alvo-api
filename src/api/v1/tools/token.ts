@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../entity/User';
+import environment from '../utils/environment';
 
 export class Token {
   message: string;
@@ -22,7 +23,7 @@ async function createToken(password: string, doc: User): Promise<Token> {
             role: doc.role,
             status: doc.status,
           },
-          process.env.JSON_WEB_TOKEN_SECRET,
+          environment.encryption.jwt,
           {
             expiresIn: '7d',
           }

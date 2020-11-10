@@ -1,94 +1,73 @@
-import { NextFunction, Request, Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
-import User from '../entity/User';
-import Role from '../entity/Role';
+import User, { UserRole } from '../entity/User';
 import jwt from '../tools/token';
 import bcrypt from '../tools/genHash';
 
-async function obtainAll(req: Request, res: Response, next: NextFunction): Promise<void>  {
-    res.status(200).send('User done');
-  }
+async function obtainAll(req: Request, res: Response): Promise<void> {
+  res.status(200).send('User done');
+}
 
 async function login(req: Request, res: Response, next: NextFunction): Promise<void> {
-
   const userRepository = getRepository(User);
   const doc = await userRepository.findOne({
-    where: [
-      {account:req.body.account},
-      {email:req.body.account}
-    ], relations: ['role']
+    where: [{ account: req.body.account }, { email: req.body.account }],
+    relations: ['role'],
   });
-  if(doc){
-    if(doc.status == 2){
+  if (doc) {
+    if (doc.status == 2) {
       res.status(403).json({
-        message: 'Your account has been blocked for security measures'
+        message: 'Your account has been blocked for security measures',
       });
-    }
-    else{
+    } else {
       try {
         const response = await jwt(req.body.password, doc);
         res.status(response.status).json({
           message: response.message,
-          token: response.token
+          token: response.token,
         });
       } catch (error) {
         next(error);
       }
     }
-  }
-  else{
+  } else {
     res.status(401).json({
-      message: 'Authentication failed'
+      message: 'Authentication failed',
     });
   }
 }
 
 async function register(req: Request, res: Response, next: NextFunction): Promise<void> {
-
   const userRepository = getRepository(User);
-  const roleRepository = getRepository(Role);
-  try{
-    const doc = await userRepository.findOneOrFail({
-      where: [
-        {account:req.body.account},
-        {email:req.body.email} 
-      ]
+  try {
+    const doc = await userRepository.findOne({
+      where: [{ account: req.body.account }, { email: req.body.email }],
     });
-    const role = await roleRepository.findOneOrFail({id:req.body.roleId});
-    if(!doc && role){
+    if (!doc) {
       const newUser = new User();
       newUser.account = req.body.account;
       newUser.email = req.body.email;
-      newUser.role = role;
+      newUser.role = UserRole[req.body.role];
       const hash = bcrypt(req.body.password);
-      if(hash){
+      if (hash) {
         newUser.password = hash;
         await userRepository.save(newUser);
-          res.status(201).json({
-            message: 'User record created'
-          });
-      }
-      else{
+        res.status(201).json({
+          message: 'User record created',
+        });
+      } else {
         res.status(500).json({
-          message: 'Hash error please try again'
+          message: 'Hash error please try again',
         });
       }
-    }
-    else if(doc){
+    } else if (doc) {
       res.status(422).json({
-        message: 'Credentials in use'
+        message: 'Credentials in use',
       });
-    }
-    else if(!role){
-      res.status(422).json({
-        message: 'Role not found'
-      });
-    }
-    else{
+    } else {
       res.status(500).send('Error in register');
     }
-  }
-  catch(err){
+  } catch (err) {
     if (err.constructor.name === 'EntityNotFoundError') res.status(404);
     next(err);
   }
@@ -103,12 +82,6 @@ async function update(req: Request, res: Response, next: NextFunction): Promise<
   const { body, params } = req;
   try {
     const user = await userRepository.findOneOrFail(params.id);
-
-    if (body.categoryId) {
-      const roleRepository = getRepository(Role);
-      const role = await roleRepository.findOneOrFail(body.roleId);
-      user.role = role || user.role;
-    }
 
     user.account = body.account ?? user.account;
     user.email = body.email ?? user.email;
@@ -139,4 +112,4 @@ async function remove(req: Request, res: Response, next: NextFunction): Promise<
   }
 }
 
-export default {obtainAll, login, logout, register, update, remove};
+export default { obtainAll, login, logout, register, update, remove };

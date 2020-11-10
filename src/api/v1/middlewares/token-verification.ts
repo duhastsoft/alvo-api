@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
-import env from '../utils/envoriment';
+import env from '../utils/environment';
 
 const tokenVerify = (req: Request, res: Response, next: NextFunction): void => {
   try {

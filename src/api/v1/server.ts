@@ -1,5 +1,5 @@
 import http from 'http';
-import env from './utils/envoriment';
+import env from './utils/environment';
 
 import express from 'express';
 import morgan from 'morgan';
@@ -14,8 +14,8 @@ const corsOptions = {
   origin: '*',
   methods: '*',
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
-  credentials: true
-}
+  credentials: true,
+};
 
 createConnection(dbConfig)
   .then(async (connection) => {
@@ -24,7 +24,7 @@ createConnection(dbConfig)
     app.use(morgan('dev'));
     app.use(helmet());
     app.use(cors(corsOptions));
-    
+
     app.use(express.json());
 
     app.get('/', (req, res) => {

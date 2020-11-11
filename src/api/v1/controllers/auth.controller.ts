@@ -22,8 +22,8 @@ async function login(req: Request, res: Response, next: NextFunction): Promise<v
         return;
       }
 
-      const token = jwt.sign({ userId: user.id, role: user.role }, environment.encryption.jwt, {
-        expiresIn: '1h',
+      const token = jwt.sign({ id: user.id, role: user.role }, environment.encryption.jwt, {
+        expiresIn: '6h',
       });
 
       res.status(200).json({ token });
@@ -44,7 +44,9 @@ async function register(req: Request, res: Response, next: NextFunction): Promis
   try {
     const userVerify = await repository.findOne({ where: [{ account }, { email }] });
     if (userVerify) {
-      res.status(400).json({ message: 'There is already an account with the email provided' });
+      res
+        .status(400)
+        .json({ message: 'There is already an account with the email or username provided' });
     } else {
       const user = new User();
       user.account = account;
@@ -71,4 +73,40 @@ async function logout(req: Request, res: Response): Promise<void> {
   res.status(200).send('Token invalidated');
 }
 
-export default { login, register, logout };
+async function promoteToAdmin(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const repository = getRepository(User);
+  try {
+    const user = await repository.findOneOrFail(req.body.userId);
+    if (user.role === UserRole.Admin || user.id === req.userData.id) {
+      res.status(400).json({ message: 'User is an admin already' });
+    } else {
+      user.role = UserRole.Admin;
+      await repository.save(user);
+      res.status(200).json({ message: 'User promoted successfully' });
+    }
+  } catch (err) {
+    if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+    next(err);
+  }
+}
+
+async function demoteToCustomer(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const repository = getRepository(User);
+  try {
+    const user = await repository.findOneOrFail(req.body.userId);
+    if (user.role === UserRole.Customer) {
+      res.status(400).json({ message: 'User is a customer already' });
+    } else if (user.id === req.userData.id) {
+      res.status(400).json({ message: 'Cannot demote your own user' });
+    } else {
+      user.role = UserRole.Customer;
+      await repository.save(user);
+      res.status(200).json({ message: 'User demoted successfully' });
+    }
+  } catch (err) {
+    if (err.constructor.name === 'EntityNotFoundError') res.status(404);
+    next(err);
+  }
+}
+
+export default { login, register, logout, promoteToAdmin, demoteToCustomer };

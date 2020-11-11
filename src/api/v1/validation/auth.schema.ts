@@ -10,7 +10,7 @@ const createTk = {
     Joi.string().trim().min(5).alphanum().required(),
     Joi.string().trim().email().required()
   ),
-  password: Joi.string().trim().min(8).alphanum().required(),
+  password: Joi.string().trim().min(8).required(),
 };
 
 const createDto = {

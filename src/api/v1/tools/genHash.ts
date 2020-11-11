@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import env from '../utils/envoriment'
+import env from '../utils/environment';
 
 const gbsalt = env.encryption.salt;
 

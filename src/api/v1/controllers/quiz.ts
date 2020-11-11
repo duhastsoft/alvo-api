@@ -54,7 +54,6 @@ async function getQuestionsByCategory(category: number | null, limit: number) {
     const questions = await query.orderBy('random()').limit(limit).getMany();
     return questions;
   } catch (err) {
-    console.log(err);
     const questions: Question[] = [];
     return questions;
   }

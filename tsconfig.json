@@ -17,5 +17,5 @@
     "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts"],
-  "exclude": ["node_modules", "build"],
+  "exclude": ["node_modules", "build", "src/api/v1/migration"]
 }

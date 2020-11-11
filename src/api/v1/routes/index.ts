@@ -1,20 +1,20 @@
 import express from 'express';
+import auth from './auth';
 import category from './category';
 import questions from './question';
 import quiz from './quiz';
-import roles from './role';
+import service from './service';
+import serviceCategories from './service-category';
 import users from './user';
-import serviceCategories from './service-category'
-import service from './service'
 
 const router = express.Router();
 
+router.use(auth);
 router.use('/user', users);
 router.use('/category', category);
 router.use('/question', questions);
 router.use('/quiz', quiz);
-router.use('/role', roles);
 router.use('/service-category', serviceCategories);
-router.use('/service', service)
+router.use('/service', service);
 
 export default router;

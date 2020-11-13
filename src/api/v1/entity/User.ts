@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import bcrypt from 'bcrypt';
 import BaseEntity from './common/BaseEntity';
+import Exam from './Exam';
 
 export enum UserRole {
   Admin = 'Admin',
@@ -32,6 +33,9 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar' })
   role: UserRole;
+
+  @OneToMany(() => Exam, (exam) => exam.user)
+  exams?: Exam[];
 
   checkIfPasswordMatches(unencryptedPassword: string): Promise<boolean> {
     return bcrypt.compare(unencryptedPassword, this.password);

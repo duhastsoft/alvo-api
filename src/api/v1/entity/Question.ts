@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import Category from './Category';
 import BaseEntity from './common/BaseEntity';
+import ExamQuestion from './ExamQuestion';
 
 @Entity()
 class Question extends BaseEntity {
@@ -36,6 +37,9 @@ class Question extends BaseEntity {
 
   @ManyToOne(() => Category, (category) => category.questions)
   category: Category;
+
+  @OneToMany(() => ExamQuestion, (examQuestion) => examQuestion.question)
+  examQuestions: ExamQuestion[];
 }
 
 export default Question;

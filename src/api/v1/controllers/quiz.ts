@@ -104,4 +104,23 @@ async function submitExam(req: Request, res: Response, next: NextFunction): Prom
   }
 }
 
-export { getCategoryQuiz, getVmtQuiz, getFreeQuiz, submitExam };
+async function getExamHistory(req: Request, res: Response, next: NextFunction): Promise<void> {
+  const repository = getRepository(Exam);
+  try {
+    const exams = await repository.find({
+      where: {
+        userId: req.userData.id,
+      },
+      order: {
+        id: 'DESC',
+      },
+      take: req.query.limit as number | undefined,
+    });
+
+    res.status(200).json({ data: exams });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export { getCategoryQuiz, getVmtQuiz, getFreeQuiz, submitExam, getExamHistory };

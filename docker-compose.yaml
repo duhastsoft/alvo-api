@@ -4,8 +4,8 @@ services:
     api:
         env_file: .env
         container_name: 'alvo-container'
-        image: 930724514106.dkr.ecr.us-east-2.amazonaws.com/alvo-api
-        ports: 
+        image: alvo-api
+        command: bash -c "./scripts/wait_for_it.sh --timeout=0 ${DB_HOST}:${DB_PORT} && npm run start"
+        ports:
             - 80:${PORT}
-        command: bash -c "scripts/wait_for_it.sh --timeout=0 ${DB_HOST}:${DB_PORT} && npm run start"
         restart: unless-stopped

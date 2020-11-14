@@ -9,3 +9,4 @@ appspec.yml
 buildspec.yml
 nodemon.json
 .env
+README.md

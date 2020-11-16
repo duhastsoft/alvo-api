@@ -2,14 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import User from '../entity/User';
 
-async function obtainAll(req: Request, res: Response): Promise<void> {
-  res.status(200).send('User done');
-}
-
 async function update(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const userRepository = getRepository(User);
-  const { body, params } = req;
   try {
+    const userRepository = getRepository(User);
+    const { body, params } = req;
+  
     const user = await userRepository.findOneOrFail(params.id);
 
     user.account = body.account ?? user.account;
@@ -28,8 +25,9 @@ async function update(req: Request, res: Response, next: NextFunction): Promise<
 }
 
 async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const serviceRepository = getRepository(User);
   try {
+    const serviceRepository = getRepository(User);
+  
     const result = await serviceRepository.delete(req.params.id);
     if (result.affected) {
       res.status(200).json({ message: 'User deleted' });
@@ -41,4 +39,4 @@ async function remove(req: Request, res: Response, next: NextFunction): Promise<
   }
 }
 
-export default { obtainAll, update, remove };
+export default { update, remove };

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, Long, Index} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, Long, Index, JoinColumn} from 'typeorm';
 import BaseEntity from './common/BaseEntity';
 import ServiceCategory from './ServiceCategory';
 
@@ -39,7 +39,11 @@ export class Service extends BaseEntity {
     priceRange: string
 
     @ManyToOne((type) => ServiceCategory, (category) => category.services)
+    @JoinColumn({ name: 'categoryId' })
     category: ServiceCategory;
+
+    @Column({nullable: false})
+    categoryId: number
 
 }
 

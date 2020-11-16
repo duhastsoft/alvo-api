@@ -5,7 +5,7 @@ import ServiceCategory from '../entity/ServiceCategory';
 
 
 async function create(req: Request, res: Response, next: NextFunction): Promise<void> {
-
+  try {
     const serviceRepository = getRepository(Service);
     const serviceCRepository = getRepository(ServiceCategory);
 
@@ -21,15 +21,14 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
     newService.name = req.body.name;
     newService.priceRange = req.body.priceRange;
     newService.serviceHours = req.body.serviceHours;
-
-    try {
-        const category = await serviceCRepository.findOneOrFail({id:req.body.categoryId});
-        newService.category = category;
-        await serviceRepository.save(newService);
-        res.status(201).json({
-          message: 'Service record created',
-          data: newService
-      }); 
+    
+    const category = await serviceCRepository.findOneOrFail({id:req.body.categoryId});
+    newService.category = category;
+    await serviceRepository.save(newService);
+    res.status(201).json({
+      message: 'Service record created',
+      data: newService
+    }); 
     } catch (err) {
         if (err.constructor.name === 'EntityNotFoundError') res.status(404);
         next(err);
@@ -37,8 +36,8 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
 }
 
 async function obtainAll(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const serviceRepository = getRepository(Service);
-    try {
+  try {  
+      const serviceRepository = getRepository(Service);
       const result = await serviceRepository.find();
       res.status(200).json({ length: result.length, data: result});
     } catch (err) {
@@ -47,8 +46,9 @@ async function obtainAll(req: Request, res: Response, next: NextFunction): Promi
 }
 
 async function findByName(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {  
     const serviceRepository = getRepository(Service);
-    try {
+    
         const result = await serviceRepository.createQueryBuilder().select().where('name ILIKE :name', {name: `%${req.query.name}%`}).getMany()
         res.status(200).json({ data: result });
     } catch (err) {
@@ -58,8 +58,8 @@ async function findByName(req: Request, res: Response, next: NextFunction): Prom
 }
 
 async function findById(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const serviceCRepository = getRepository(Service);
   try {
+  const serviceCRepository = getRepository(Service);
       const service = await serviceCRepository.findOneOrFail(req.params.id);
       res.status(200).json({ data: service });
     } catch (err) {
@@ -70,9 +70,9 @@ async function findById(req: Request, res: Response, next: NextFunction): Promis
 
 
 async function update(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const serviceRepository = getRepository(Service);
-  const { body, params } = req;
-  try {
+  try { 
+    const serviceRepository = getRepository(Service);
+    const { body, params } = req;
     const service = await serviceRepository.findOneOrFail(params.id);
 
     if (body.categoryId) {
@@ -103,8 +103,8 @@ async function update(req: Request, res: Response, next: NextFunction): Promise<
 }
 
 async function remove(req: Request, res: Response, next: NextFunction): Promise<void> {
-  const serviceRepository = getRepository(Service);
   try {
+  const serviceRepository = getRepository(Service);
     const result = await serviceRepository.delete(req.params.id);
     if (result.affected) {
       res.status(200).json({ message: 'Service deleted' });

@@ -5,9 +5,6 @@ import { validateBody, validateParams } from '../validation/validation';
 
 const router = express.Router();
 
-// GET ENDPOINTS
-router.get('/all', controller.obtainAll);
-
 // PUT ENDPOINTS
 router.put(
   '/:id',

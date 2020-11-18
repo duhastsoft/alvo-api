@@ -49,6 +49,8 @@ async function register(req: Request, res: Response, next: NextFunction): Promis
         .json({ message: 'There is already an account with the email or username provided' });
     } else {
       const user = new User();
+      user.givenName = req.body.firstname;
+      user.lastName = req.body.lastname;
       user.account = account;
       user.email = email;
       user.role = role;

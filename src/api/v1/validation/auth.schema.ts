@@ -14,6 +14,8 @@ const createTk = {
 };
 
 const createDto = {
+  firstname: Joi.string().trim(),
+  lastname: Joi.string().trim(),
   account: Joi.string().trim().min(5).alphanum().required(),
   password: Joi.string().trim().min(8).required(),
   email: Joi.string().trim().email().required(),

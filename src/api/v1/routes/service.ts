@@ -16,8 +16,6 @@ router.get('/:id', validateParams(schemas.paramId), controller.findById);
 // POST ENDPOINTS
 router.post(
   '/',
-  authenticate,
-  authorize([UserRole.Admin]),
   validateBody(schemas.create),
   controller.create
 );

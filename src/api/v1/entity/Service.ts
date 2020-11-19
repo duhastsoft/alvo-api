@@ -23,17 +23,23 @@ export class Service extends BaseEntity {
     @Column()
     address: string
 
+    @Column({default: 'La Libertad'})
+    states: string
+
+    @Column({default: 'Santa Tecla'})
+    cities: string
+
     @Column()
     contactName: string
 
     @Column()
     image: string
 
-    @Column()
-    latitud: string
+    @Column({type: 'decimal' ,nullable: true})
+    latitud: number
 
-    @Column()
-    longitude: string
+    @Column({type: 'decimal', nullable: true})
+    longitude: number
 
     @Column()
     priceRange: string

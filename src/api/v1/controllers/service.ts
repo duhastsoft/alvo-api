@@ -11,6 +11,8 @@ async function create(req: Request, res: Response, next: NextFunction): Promise<
 
     const newService = new Service();
     newService.address  = req.body.address; 
+    newService.states = req.body.states;
+    newService.cities = req.body.cities;
     newService.category = req.body.category;
     newService.contactName = req.body.contactName;
     newService.contactNumber = req.body.contactNumber;
